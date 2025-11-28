@@ -10,8 +10,20 @@ from crewai.project import CrewBase, agent, task, crew
 from crewai_tools import SerperDevTool
 from datetime import date, timedelta
 
+
+# Custom wrapper to log SerperDevTool queries
+class LoggingSerperDevTool(SerperDevTool):
+    """SerperDevTool wrapper that logs all search queries"""
+
+    def _run(self, search_query: str, **kwargs) -> str:
+        print(f"🔍 SerperDevTool Query: {search_query}")
+        result = super()._run(search_query, **kwargs)
+        print(f"✅ SerperDevTool returned {len(result)} characters of results")
+        return result
+
+
 # Shared web-search tool for both agents
-search_tool = SerperDevTool()
+search_tool = LoggingSerperDevTool()
 
 
 @CrewBase
