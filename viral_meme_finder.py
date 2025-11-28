@@ -10,6 +10,7 @@ from crewai.project import CrewBase, agent, task, crew
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 from datetime import date, timedelta
 
+from youtube import _normalize_memes_with_youtube_links
 
 # Shared web-search tool for both agents
 search_tool = SerperDevTool()
@@ -91,26 +92,28 @@ def get_recent_viral_memes(days_back: int = 14, max_memes: int = 10) -> List[Dic
         }
     )
 
-    # crewAI may already give us parsed JSON depending on version/config
+
+    # Normalize to a list
     if isinstance(raw_result, list):
-        return raw_result
-
-    if isinstance(raw_result, dict):
-        # sometimes the final result is nested
-        # you can adjust this depending on how your crew is configured
-        return [raw_result]
-
-    if isinstance(raw_result, str):
-        # Attempt to parse JSON from the string
-        raw_result = raw_result.strip()
+        memes = raw_result
+    elif isinstance(raw_result, dict):
+        memes = [raw_result]
+    elif isinstance(raw_result, str):
+        raw = raw_result.strip()
         try:
-            parsed = json.loads(raw_result)
+            parsed = json.loads(raw)
             if isinstance(parsed, list):
-                return parsed
-            return [parsed]
+                memes = parsed
+            else:
+                memes = [parsed]
         except json.JSONDecodeError:
-            # Fallback: wrap in a single item if parsing fails
-            return [{"raw_output": raw_result}]
+            memes = [{"raw_output": raw}]
+    else:
+        memes = [{"raw_output": str(raw_result)}]
 
     # Last-resort fallback
-    return [{"raw_output": str(raw_result)}]
+    if len(memes) == 1 and "raw_output" in memes[0]:
+        return memes
+
+    # Replace evidence_links with YouTube search URLs
+    return _normalize_memes_with_youtube_links(memes)
