@@ -10,7 +10,7 @@ app = FastAPI(title="Viral Meme Finder API")
 
 @app.get("/memes")
 def memes(
-    days_back: int = Query(14, ge=1, le=30),
+    days_back: int = Query(14, ge=1, le=3000),
     max_memes: int = Query(10, ge=1, le=50),
 ):
     """
