@@ -8,7 +8,7 @@ from typing import List, Dict, Any
 from crewai import Agent, Task, Crew, Process, LLM
 from crewai.project import CrewBase, agent, task, crew
 from crewai_tools import SerperDevTool
-
+from datetime import date, timedelta
 
 # Shared web-search tool for both agents
 search_tool = SerperDevTool()
