@@ -18,6 +18,7 @@
     A bullet list of candidate viral memes from the last {days_back} days,
     with rough evidence and links for each.
   agent: researcher
+  max_iterations: 3
 
 aggregate_task:
   description: >
@@ -33,11 +34,12 @@ aggregate_task:
     - tags: list of simple tags (e.g. ['reaction', 'video', 'sound'])
     You MUST NOT include any meme whose started_around date is before 
     {cutoff_date}. It is acceptable to return an empty list if there are 
-    no valid memes.
+    no valid memes.    
     Return ONLY a JSON array of these objects, with no extra text,
     no markdown, and no comments.
   expected_output: >
     A pure JSON array (no surrounding text) of up to {max_memes} meme
     objects with the exact fields requested.
   agent: analyst
+  max_iterations: 3
 

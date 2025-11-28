@@ -7,24 +7,13 @@ from typing import List, Dict, Any
 
 from crewai import Agent, Task, Crew, Process, LLM
 from crewai.project import CrewBase, agent, task, crew
-from crewai_tools import SerperDevTool
+from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 from datetime import date, timedelta
 
 
-# Custom wrapper to log SerperDevTool queries
-class LoggingSerperDevTool(SerperDevTool):
-    """SerperDevTool wrapper that logs all search queries"""
-
-    def _run(self, search_query: str, **kwargs) -> str:
-        print(f"🔍 SerperDevTool Query: {search_query}")
-        result = super()._run(search_query, **kwargs)
-        print(f"✅ SerperDevTool returned {len(result)} characters of results")
-        return result
-
-
 # Shared web-search tool for both agents
-search_tool = LoggingSerperDevTool()
-
+search_tool = SerperDevTool()
+scraper = ScrapeWebsiteTool()
 
 @CrewBase
 class ViralMemeCrew:
@@ -39,16 +28,18 @@ class ViralMemeCrew:
             config=self.agents_config["researcher"],
             tools=[search_tool],
             llm=LLM(model="gpt-4o-mini", temperature=0.2),
-            verbose=False,
+            verbose=True,
+            max_iter=5
         )
 
     @agent
     def analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["analyst"],
-            tools=[search_tool],
+            tools=[scraper],
             llm=LLM(model="gpt-4o-mini", temperature=0.2),
-            verbose=False,
+            verbose=True,
+            max_iter=3
         )
 
     @task

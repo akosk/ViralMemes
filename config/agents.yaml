@@ -8,6 +8,7 @@
     quickly identify which memes are 'viral' based on recency, reach, and
     engagement.
   allow_delegation: false
+  max_iter: 3
 
 analyst:
   role: "Meme Analyst and Summarizer"
@@ -18,4 +19,5 @@ analyst:
     You specialize in understanding why memes go viral and can distill the
     most important details: name, where they went viral, why, and links.
   allow_delegation: false
+  max_iter: 3
 
