@@ -9,6 +9,9 @@
     - Being widely discussed in multiple sources.
     - Being mentioned in news or culture articles.
 
+    You MUST ignore any memes that became popular before {cutoff_date}.
+    If an article or page is older than {cutoff_date}, do not use it as 
+    evidence of a recent viral meme.
     Collect significantly more candidates than {max_memes}, then pass
     your notes to the next agent.
   expected_output: >
@@ -19,7 +22,7 @@
 aggregate_task:
   description: >
     From the research notes above, select up to {max_memes} memes that are
-    clearly viral and recent (within the last {days_back} days).
+    clearly viral and recent (on or after {cutoff_date}).
 
     For each meme, produce a JSON object with the following fields:
     - title: short recognizable name of the meme
@@ -28,7 +31,9 @@ aggregate_task:
     - evidence_links: list of 2–5 URLs that show the meme or report on it
     - started_around: approximate start date as 'YYYY-MM-DD'
     - tags: list of simple tags (e.g. ['reaction', 'video', 'sound'])
-
+    You MUST NOT include any meme whose started_around date is before 
+    {cutoff_date}. It is acceptable to return an empty list if there are 
+    no valid memes.
     Return ONLY a JSON array of these objects, with no extra text,
     no markdown, and no comments.
   expected_output: >

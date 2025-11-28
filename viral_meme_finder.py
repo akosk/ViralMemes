@@ -74,11 +74,17 @@ def get_recent_viral_memes(days_back: int = 14, max_memes: int = 10) -> List[Dic
         - started_around
         - tags
     """
+
+    today = date.today()
+    cutoff = today - timedelta(days=days_back)
+    cutoff_str = cutoff.strftime("%Y-%m-%d")
+
     viral_meme_crew = ViralMemeCrew().crew()
     raw_result = viral_meme_crew.kickoff(
         inputs={
             "days_back": days_back,
             "max_memes": max_memes,
+            "cutoff_date": cutoff_str
         }
     )
 
