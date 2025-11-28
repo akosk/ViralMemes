@@ -1,0 +1,7 @@
+﻿crewai
+crewai-tools
+openai
+fastapi
+uvicorn
+aiohttp
+python-dotenv
