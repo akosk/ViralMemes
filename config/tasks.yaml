@@ -1,0 +1,38 @@
+﻿research_task:
+  description: >
+    Search the web and social platforms for memes that went viral in the
+    last {days_back} days. Consider platforms such as X/Twitter, Reddit,
+    TikTok, Instagram, and YouTube.
+
+    Focus only on memes that clearly show viral behavior, such as:
+    - Large engagement numbers (likes, shares, comments).
+    - Being widely discussed in multiple sources.
+    - Being mentioned in news or culture articles.
+
+    Collect significantly more candidates than {max_memes}, then pass
+    your notes to the next agent.
+  expected_output: >
+    A bullet list of candidate viral memes from the last {days_back} days,
+    with rough evidence and links for each.
+  agent: researcher
+
+aggregate_task:
+  description: >
+    From the research notes above, select up to {max_memes} memes that are
+    clearly viral and recent (within the last {days_back} days).
+
+    For each meme, produce a JSON object with the following fields:
+    - title: short recognizable name of the meme
+    - primary_platform: main platform where it went viral (e.g. 'TikTok')
+    - summary: 2–3 sentence explanation of the meme and why it is viral
+    - evidence_links: list of 2–5 URLs that show the meme or report on it
+    - started_around: approximate start date as 'YYYY-MM-DD'
+    - tags: list of simple tags (e.g. ['reaction', 'video', 'sound'])
+
+    Return ONLY a JSON array of these objects, with no extra text,
+    no markdown, and no comments.
+  expected_output: >
+    A pure JSON array (no surrounding text) of up to {max_memes} meme
+    objects with the exact fields requested.
+  agent: analyst
+
